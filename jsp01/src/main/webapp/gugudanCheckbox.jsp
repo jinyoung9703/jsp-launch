@@ -17,7 +17,6 @@
       <label><span>8단</span><input type="checkbox" name="dan" value="8" /></label>
       <label><span>9단</span><input type="checkbox" name="dan" value="9" /></label>
       <button>구구단 출력 부탁드립니다.</button>
-      <h1></h1>
     </form>
   </body>
 </html>
