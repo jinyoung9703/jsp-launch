@@ -22,38 +22,40 @@
 	String sql = "select * from member where id = ? and password = ?";
 	
 	Class.forName(driver);
-	conn = DriverManager.getConnection(url, id, pw);
+	conn = DriverManager.getConnection(url,id,pw);
 	pstmt = conn.prepareStatement(sql);
-	pstmt.setString(1, pUserId);
-	pstmt.setString(2, pUserPw);
+	pstmt.setString(1,pUserId);
+	pstmt.setString(2,pUserPw);
 	rs = pstmt.executeQuery();
-	//response.setContentType("text/html;charset=utg-8");
+	response.setCharacterEncoding("utf-8");
+	response.setContentType("text/html;charset=utf-8");
 	
-	// page < request < session < application
-
-	if(rs.next()){
+	// pageContext < request < session < applicationContext
+	
+	if(rs.next()) {
 		String userId = rs.getString("id");
 		String userPw = rs.getString("password");
 		String userName = rs.getString("name");
 		
 		//out.println("로그인 성공");
-		//response.sendRedirect("login-ok.jsp?userName="+userId);
 		// 직접 주소창을 바꾸는 거
-		//request.getRequestDispatcher("login-ok.jsp").forward(request,response);
-		pageContext.setAttribute("pageUserId", userId);		
-		request.setAttribute("userId", userId);
-		session.setAttribute("userId", userId);
-		response.sendRedirect("login-ok.jsp?userId="+userId);
+
+		//request.setAttribute("userId", userId);
+		session.setAttribute("loggedUserId", userId);
+		session.setAttribute("loggedUserName", userName);
 		
+		/* RequestDispatcher dispatcher =  request.getRequestDispatcher("login-ok.jsp");
+		dispatcher.forward(request, response); */
+		//response.sendRedirect("login-ok.jsp?userId="+userId);
+		System.out.println(request.getParameter(userId));
 		RequestDispatcher dispatcher = request.getRequestDispatcher("login-ok.jsp");
 		dispatcher.forward(request, response);
+		//request.getRequestDispatcher("login-ok.jsp").forward(request, response);
 		
-	}else{
+	} else {
 		out.println("로그인 실패");
 	}
+%>
 	
 	
-
-	%>
-
 	
