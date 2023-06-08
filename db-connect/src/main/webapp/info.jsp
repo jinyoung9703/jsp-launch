@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
@@ -5,6 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ include file="include/header.jsp"%>
 
 <%-- <P><%= session.getAttribute("loggedUsername") %></P> --%>
+<!-- prettier-ignore -->
 
 <%
 //db 접속
@@ -30,15 +32,14 @@
 	String detailAddress= null;
 	String zonecode= null;
 	String name= null;
-	String allAddress =  null;
 	if(rs.next()){
 		address = rs.getString("address");
 		detailAddress = rs.getString("detailAddress");
 		zonecode = rs.getString("changeZonecode");
 		name = rs.getString("name");
-		allAddress= address+ " / "+detailAddress;
+// 		allAddress= address+ " / "+detailAddress;
 	}
-	if(detailAddress==null) detailAddress = "상세주소 없음";
+
 
 %>
 
@@ -55,7 +56,7 @@
       </tr>
       <tr>
         <th scope="row">주소</th>
-    <td><%= address +" / "+ detailAddress %></td>
+        <td><%=address %></td>
       </tr>
       <tr>
         <th scope="row">우편번호</th>
@@ -63,9 +64,9 @@
       </tr>
     </tbody>
   </table>
-   <div class="mt-5">
+  <div class="mt-5">
     <a href="modify.jsp" class="btn btn-info">회원 정보 수정</a>
-    <a href="delete.jsp" class="btn btn-dark">회원 탈퇴</a>
+    <a href="delete.jsp" class="btn btn-danger">회원 탈퇴</a>
   </div>
 </div>
 

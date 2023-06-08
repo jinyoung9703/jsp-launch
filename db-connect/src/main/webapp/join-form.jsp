@@ -1,11 +1,11 @@
 <%@ include file = "include/header.jsp" %> <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<form action="join-process.jsp" method="post" class="join">
+<form action="join-process.jsp" method="post" class="join" name="joinForm">
   <div class="container-sm mt-5">
     <div class="row justify-content-center">
       <div class="col-6">
-        <div class="form-floating mb-3">
-          <input type="text" name="userId" class="form-control" id="floatingInput" placeholder="아이디를 입력해 주세요." />
-          <label for="floatingInput">ID</label>
+        <div class="input-group mb-3">
+          <input type="text" name="userId" class="form-control form-control-lg userId" id="floatingInput" placeholder="아이디를 입력해 주세요." />
+          <button class="btn btn-secondary" type="button" id="btnIdCheck">ID중복체크</button>
         </div>
         <div class="form-floating mb-3">
           <input type="password" name="userPw" class="form-control" id="floatingPassword" placeholder="Password" />
@@ -17,29 +17,83 @@
         </div>
         <div class="input-group mb-3">
           <input type="text" class="form-control form-control-lg" id="zonecode" placeholder="우편번호" name="zonecode" readonly />
-          <button class="btn btn-secondary" type="button" id="button-addon2" onclick="searchZonecode()">Button</button>
+          <button class="btn btn-secondary" type="button" id="button-addon2" onclick="searchZonecode()">우편번호</button>
         </div>
         <div class="form-floating mb-3">
-          <input type="text" name="userAddress" class="form-control address" id="floatingName" placeholder="주소를 입력해 주세요." />
-          <label for="floatingName">Address</label>
+          <input type="text" name="userAddress" class="form-control address" id="floatingAddress" placeholder="주소를 입력해 주세요." />
+          <label for="floatingAddress">Address</label>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3 g-2">
           <div class="col">
-            <input type="text" class="form-control-lg detailaddress" placeholder="상세주소" name="detailAddress" />
+            <input type="text" class="form-control form-control-lg detailAddress" placeholder="상세주소" name="detailAddress" />
           </div>
           <div class="col">
-            <input type="text" class="form-control-lg extraAddress" placeholder="참고사항" name="extraAddress" />
+            <input type="text" class="form-control form-control-lg extraAddress" placeholder="참고사항" name="extraAddress" />
           </div>
         </div>
-
         <div class="text-center">
-          <button type="submit" class="btn btn-primary btn-lg">Join</button>
+          <button type="submit" id="btnSubmit" class="btn btn-primary btn-lg">Join</button>
         </div>
       </div>
     </div>
   </div>
 </form>
 <script>
+  const userId = document.querySelector(".userId");
+  const btnIdCheck = document.querySelector("#btnIdCheck");
+  const btnSubmit = document.querySelector("#btnSubmit");
+
+  const joinForm = document.forms.joinForm;
+  console.log(joinForm.elements.userId);
+  let isDoubleCheck = false;
+  btnSubmit.addEventListener("click", (e) => {
+// 	  e.preventDefault();
+    if (joinForm.elements.userId.value === "") {
+      e.preventDefault();
+      alert("아이디를 입력하세요.");
+      // return false;
+    } else if (joinForm.elements.userPw.value === "") {
+      e.preventDefault();
+      alert("비밀번호를 입력하세요.");
+      // return false;
+    } else if (joinForm.elements.userName.value === "") {
+      e.preventDefault();
+      alert("이름을 입력하세요.");
+      // return false;
+    } else if (joinForm.elements.zonecode.value === "") {
+      e.preventDefault();
+      alert("우편번호를 입력하세요.");
+      // return false;
+    } else if (joinForm.elements.userAddress.value === "") {
+      e.preventDefault();
+      alert("주소를 입력하세요.");
+      // return false;
+    }
+    
+    if (isDoubleCheck === false) {
+      e.preventDefault();
+      alert("아이디 중복 체크해주세요.");
+      joinForm.elements.userId.focus();
+    }
+  });
+  btnIdCheck.addEventListener("click", () => {
+    fetch("idCheck.jsp?userId=" + userId.value)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        //console.log(data);
+        if (data.isOk) {
+          alert("쓸 수 있는 아이디입니다.");
+          isDoubleCheck = true;
+        } else {
+          alert("쓸 수 없는 아이디입니다.");
+          userId.value = "";
+          userId.focus();
+        }
+      });
+  });
+
   function searchZonecode() {
     new daum.Postcode({
       oncomplete: function (data) {

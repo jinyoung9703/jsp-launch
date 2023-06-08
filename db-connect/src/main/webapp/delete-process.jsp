@@ -18,7 +18,7 @@
 	
 	Connection conn = null;
 	PreparedStatement pstmt = null;
-	ResultSet rs = null;
+
 	
 	String sql = "delete from member where id = ? and password = ?";
 	//String sql = "delete from member values(?,?)";
@@ -28,8 +28,19 @@
 	pstmt = conn.prepareStatement(sql);
 	pstmt.setString(1, pUserId);
 	pstmt.setString(2, pUserPw);
-	rs = pstmt.executeQuery();
+
+
 	
-	out.println("회원 탈퇴 성공");
+	int result = pstmt.executeUpdate();// select 를 제외한 나머지 update, delete , insert
+	if(result > 0){
+		session.invalidate();
+		response.sendRedirect("login-form.jsp");
+	}else{
+		out.println("<script>alert('서버오류입니다. 잠시뒤에 다시 시도해 주세요.'); history.back();</script>");
+	}
+	
+	
+	
+	
 	
 	%>
