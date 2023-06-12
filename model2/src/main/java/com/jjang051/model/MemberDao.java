@@ -7,31 +7,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MemberDao {
-	private String driver = "oracle.jdbc.OracleDriver";
-	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String id = "jjy0317";
-	private String pw = "1234";
+	private String driver = "oracle.jdbc.OracleDriver"; 
+	private String url = "jdbc:oracle:thin:@localhost:1521:xe"; 
+	private String id = "jjy0317"; 
+	private String pw = "1234"; 
 	
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-	
-	
-	// MBC design pattern 
-	private void getConnection(){
+	private Connection conn = null; 
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null; 
+	// MVC  design pattern  
+	private void getConnection() {
 		try {
 			Class.forName(driver);
-			conn = DriverManager.getConnection(url,id,pw);
+			conn = DriverManager.getConnection(url, id, pw);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 	private void close() {
 		try {
-			if(rs!=null)rs.close();
-			if(pstmt!=null)pstmt.close();
-			if(conn!=null)conn.close();			
+			if(rs!=null) rs.close();
+			if(pstmt!=null) pstmt.close();
+			if(conn!=null) conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -40,7 +38,7 @@ public class MemberDao {
 	public int insertMember(MemberDto memberDto) {
 		int result = 0;
 		getConnection();
-		String sql = "insert into member vaulues(?,?,?,?,?,?,?,?)";
+		String sql =  "insert into member values(?,?,?,?,?,?,?,?)";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberDto.getId());
@@ -54,36 +52,79 @@ public class MemberDao {
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			close();
 		}
-		return result; 	//리턴을해야 오류가 사라짐
+		return result;
 	}
+	
+	
+	
+	
 	
 	public MemberDto loginMember(MemberDto memberDto) {
 		MemberDto loggedMemberDto = null;
 		getConnection();
 		String sql = "select * from member where id = ? and password = ?";
 		try {
-			pstmt=conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberDto.getId());
 			pstmt.setString(2, memberDto.getPassword());
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				loggedMemberDto = new MemberDto();
-				String userId =rs.getString("id");
-				String userName =rs.getString("name");
-				
+				String userId =  rs.getString("id");
+				String userName = rs.getString("name");
 				loggedMemberDto.setId(userId);
 				loggedMemberDto.setName(userName);
-				
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			close();
 		}
 		return loggedMemberDto;
 	}
-	
+
+	public int idCheck(String userId) {
+		int result = 0;
+		getConnection();
+		String sql = "select count(*) as count from member where id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,userId);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt("count");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return result;
+	}
+
+	public MemberDto getMemberInfo(String userId) {
+		MemberDto infoMemberDto = null;;
+		getConnection();
+		String sql =  "select * from member where id = ?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				infoMemberDto = new MemberDto();
+				infoMemberDto.setId(rs.getString("id"));
+				infoMemberDto.setName(rs.getString("name"));
+				infoMemberDto.setEmail(rs.getString("email"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return infoMemberDto;
+	}
 }

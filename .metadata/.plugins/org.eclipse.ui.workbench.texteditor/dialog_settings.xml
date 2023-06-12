@@ -6,8 +6,9 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="true"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="allAddress"/>
+		<item key="selection" value="loggedMemberName"/>
 		<list key="findhistory">
+			<item value="loggedMemberName"/>
 			<item value="allAddress"/>
 			<item value="&quot;"/>
 			<item value="+ &quot;"/>

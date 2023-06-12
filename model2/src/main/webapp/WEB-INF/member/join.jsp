@@ -54,7 +54,7 @@
 
   const joinForm = document.forms.joinForm;
   console.log(joinForm.elements.userId);
-  let isDoubleCheck = true; // 일단 true로 바꿈
+  let isDoubleCheck =false ; // 중복체크 일단 true로 바꿈
   btnSubmit.addEventListener("click", (e) => {
     // 	  e.preventDefault();
     if (joinForm.elements.userId.value === "") {
@@ -106,7 +106,7 @@
     
   });
   btnIdCheck.addEventListener("click", () => {
-    fetch("idCheck.jsp?userId=" + userId.value)
+    fetch("../member/idCheck?userId=" + userId.value)
       .then((response) => {
         return response.json();
       })
