@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet("/index/index")
-public class IndexController extends HttpServlet {
+@WebServlet("/member/modifyPassword")
+public class PasswordModifyController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-     
-    public IndexController() {
+       
+ 
+    public PasswordModifyController() {
         super();
-      
     }
 
-	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/index/index.jsp");	//절대경로 설정
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/member/modify-password.jsp");
 		dispatcher.forward(request, response);
+		
 	}
 
 }

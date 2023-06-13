@@ -9,20 +9,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jjang051.model.MemberDao;
+import com.jjang051.model.MemberDto;
 
-@WebServlet("/index/index")
-public class IndexController extends HttpServlet {
+
+@WebServlet("/member/delete")
+public class DeleteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-     
-    public IndexController() {
+    
+    public DeleteController() {
         super();
-      
+       
     }
 
 	
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/index/index.jsp");	//절대경로 설정
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/member/delete.jsp");
 		dispatcher.forward(request, response);
-	}
+    }
 
 }

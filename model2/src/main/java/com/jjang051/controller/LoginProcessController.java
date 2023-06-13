@@ -27,6 +27,7 @@ public class LoginProcessController extends HttpServlet {
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		MemberDao memberDao = new MemberDao();
+		// db 접속 코드
 		MemberDto memberDto = new MemberDto();
 		String userId = request.getParameter("userId");
 		String userPw =request.getParameter("userPw");
