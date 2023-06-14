@@ -1,4 +1,4 @@
-package com.jjang051.controller;
+package com.jjang051.controller.board;
 
 import java.io.IOException;
 
@@ -10,18 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet("/member/join")
-public class JoinFormController extends HttpServlet {
+@WebServlet("/board/write")
+public class WriteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public JoinFormController() {
+       
+    
+    public WriteController() {
         super();
     }
 
+	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/member/join.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/board/write.jsp");
 		dispatcher.forward(request, response);
 	}
 
 }
-

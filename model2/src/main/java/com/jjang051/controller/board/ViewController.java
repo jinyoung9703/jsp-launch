@@ -1,4 +1,4 @@
-package com.jjang051.controller;
+package com.jjang051.controller.board;
 
 import java.io.IOException;
 
@@ -9,24 +9,29 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.jjang051.model.MemberDao;
-import com.jjang051.model.MemberDto;
+import com.jjang051.model.BoardDao;
+import com.jjang051.model.BoardDto;
 
-@WebServlet("/member/modify")
-public class ModifyController extends HttpServlet {
+@WebServlet("/board/view")
+public class ViewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public ModifyController() {
+    
+    public ViewController() {
         super();
     }
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = request.getParameter("userId");
-		MemberDao memberDao = new MemberDao();
-		MemberDto infoMemberDto = memberDao.getMemberInfo(userId);
-		request.setAttribute("infoMemberDto", infoMemberDto);
-		RequestDispatcher dispatcher = 
-				request.getRequestDispatcher("/WEB-INF/member/modify.jsp");
+	
+		int id = Integer.parseInt(request.getParameter("id"));
+		BoardDao boardDao = new BoardDao();
+		BoardDto boardDto = boardDao.getView(id);
+		request.setAttribute("boardDto", boardDto);
+		
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/board/view.jsp");
 		dispatcher.forward(request, response);
+
 	}
+
 }

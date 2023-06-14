@@ -37,16 +37,32 @@ select * from member;
 update member set password = '12345' where id = 'jang';
 
 --자동증가 auto increament my sql은 자동 증가가 있다
+--오라클은 자동증가가 없다
 create table board (
-    id          number primary key,
+    id          number primary key, --글의 고유 번호  
+    userId      varchar2(100)not null, -- member id를 통한 조회
     name        varchar2(100)not null,
     title       VARCHAR2(300) not null,
     contents    VARCHAR2(3000) not null,
     regdate     date default sysdate,
-    hit         number
+    hit         number,
+    constraint  fk_userid foreign key(userId) references member (id)
+--  constraint 내가정하는 포킨키 이름 foreign key(현재 테이블의 컬럼명) references (다른 테이블 명)(다른 테이블의 컬럼명)
 );
 
-insert into board values (seq_board.nextval,'장성호','제목을 씁니다.','내용이 들어갑니다.',sysdate,0);
+drop table board;
+
+insert into board values (seq_board.nextval,'jang','장성호','제목입니다.','내용이입니다.',sysdate,0);
 rollback;
 
 select * from board;
+
+select * from member;
+
+delete from board where id = 5;
+
+commit;
+
+select * from board where id = 20;
+
+update board set hit = hit + 1 where id = 14; --조회수

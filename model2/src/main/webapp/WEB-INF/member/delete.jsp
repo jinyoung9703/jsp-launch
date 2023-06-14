@@ -5,10 +5,11 @@
 	<div class="container-xl">
 		<div class="row mt-5 justify-content-center">
 			<div class="col-6">
-				<div class="form-floating mb-3">
-					<input type="text" name="userId" class="form-control"
-						id="floatingInput" placeholder="아이디를 입력해 주세요." value="${loggedMember.id }"
-						readonly /> <label for="floatingInput">ID</label>
+				<div >
+					<input type="hidden" name="userId" class="form-control"
+						id="floatingInput" placeholder="아이디를 입력해 주세요."
+						value="${loggedMember.id }" readonly /> 
+						
 				</div>
 				<div class="form-floating mb-3">
 					<input type="password" name="userPw" class="form-control"
