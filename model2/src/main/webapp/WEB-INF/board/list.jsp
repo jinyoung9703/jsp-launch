@@ -4,7 +4,6 @@
 <div class="container-sm mt-5">
 	<table class="table">
 		<colgroup>
-		
 			<col style="width: 50px">
 			<col>
 			<col style="width: 150px">
@@ -21,18 +20,42 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items = "${boardList }" var = "boardDto">
-			<tr>
-				<th>${boardDto.id }</th>
-				<td><a href="../board/view?id=${boardDto.id }">${boardDto.title }</a></td>
-				<td>${boardDto.name }</td>
-				<td>${boardDto.regDate }</td>
-				<td>${boardDto.hit }</td>
-			</tr>
+			<c:forEach items="${boardList}" var="boardDto">
+				<tr>
+					<td>${boardDto.id }</td>
+					<!-- 				query paramater get 방식 노출시키면안됨 -->
+					<td><a href="../board/view?id=${boardDto.id }">${boardDto.title }</a></td>
+					<td>${boardDto.name }</td>
+					<td>${boardDto.regDate }</td>
+					<td>${boardDto.hit }</td>
+				</tr>
 			</c:forEach>
-
-
 		</tbody>
 	</table>
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			<li class="page-item"><a class="page-link" href="#"
+				aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+			</a></li>
+			<c:forEach begin="1" end="${pageTotal }" step="1" var="page" varStatus="status">
+			
+				<li class="page-item ${page == param.clickpage?'active':'' }"><a class="page-link"
+					href="../board/list?start=${(page-1)*10+1 }&end=${page*10}&clickpage=${page}">${page }</a></li>
+			</c:forEach>
+
+			<li class="page-item"><a class="page-link" href="#"
+				aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+			</a></li>
+		</ul>
+	</nav>
+
+	<div class="mt-5">
+		<a href="" class="btn btn-primary">WRITE</a>
+		<!-- 	<a href="" class="btn btn-danger">DELETE</a> -->
+	</div>
 </div>
 <%@ include file="../include/footer.jsp"%>
+
+
+
+

@@ -7,7 +7,6 @@
     <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
     <fullyQualifiedTypeName name="java.sql.ResultSet"/>
     <fullyQualifiedTypeName name="java.sql.DriverManager"/>
-    <fullyQualifiedTypeName name="javax.print.attribute.HashPrintRequestAttributeSet"/>
     <fullyQualifiedTypeName name="javax.servlet.http.HttpSessionActivationListener"/>
     <fullyQualifiedTypeName name="java.sql.Connection"/>
     <fullyQualifiedTypeName name="javax.servlet.DispatcherType"/>
@@ -17,9 +16,16 @@
     <fullyQualifiedTypeName name="com.jjang051.model.MemberDto"/>
     <fullyQualifiedTypeName name="com.jjang051.model.DeleteDto"/>
     <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
-    <fullyQualifiedTypeName name="com.jjy0317.utils.ScriptWriter"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
-    <fullyQualifiedTypeName name="com.jjang051.model.BoardDao"/>
+    <fullyQualifiedTypeName name="jakarta.servlet.annotation.WebServlet"/>
+    <fullyQualifiedTypeName name="org.apache.catalina.filters.ExpiresFilter.XHttpServletResponse"/>
+    <fullyQualifiedTypeName name="jakarta.servlet.http.HttpServletRequest"/>
+    <fullyQualifiedTypeName name="jakarta.servlet.http.HttpServletResponse"/>
+    <fullyQualifiedTypeName name="jakarta.servlet.ServletException"/>
+    <fullyQualifiedTypeName name="jakarta.servlet.http.HttpSession"/>
+    <fullyQualifiedTypeName name="com.jjy0317.utils.ScriptWriter"/>
+    <fullyQualifiedTypeName name="javax.print.attribute.HashPrintRequestAttributeSet"/>
     <fullyQualifiedTypeName name="javax.servlet.RequestDispatcher"/>
+    <fullyQualifiedTypeName name="com.jjang051.model.BoardDao"/>
     <fullyQualifiedTypeName name="com.jjang051.model.BoardDto"/>
 </qualifiedTypeNameHistroy>

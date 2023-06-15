@@ -57,6 +57,10 @@ rollback;
 
 select * from board;
 
+select * from board order by id desc; --순번을 뒤집는다
+
+select * from board where id >90  and id < 105 order by id desc; --90 ~ 105
+
 select * from member;
 
 delete from board where id = 5;
@@ -64,5 +68,20 @@ delete from board where id = 5;
 commit;
 
 select * from board where id = 20;
-
+--
 update board set hit = hit + 1 where id = 14; --조회수
+
+-- 서브쿼리
+select * from
+(select rownum as no,b.* from
+        (select * from board order by id desc) b) where no  >=1 and no<=10;
+
+--내림차순
+--select rownum,b.* from
+--(select * from board order by id desc) b;
+--오름차순
+--select b.* from
+--(select * from board order by id desc) b;
+select count(*) from board;
+
+

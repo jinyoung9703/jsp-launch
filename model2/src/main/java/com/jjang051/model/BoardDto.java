@@ -8,12 +8,9 @@ public class BoardDto {
 	private String contents;
 	private String regDate;
 	private int hit;
-	
 	public BoardDto() {
 		super();
-
 	}
-	
 	public BoardDto(int id, String userId, String name, String title, String contents, String regDate, int hit) {
 		super();
 		this.id = id;
@@ -66,15 +63,9 @@ public class BoardDto {
 	public void setHit(int hit) {
 		this.hit = hit;
 	}
-	
-	
 	@Override
 	public String toString() {
 		return "BoardDto [id=" + id + ", userId=" + userId + ", name=" + name + ", title=" + title + ", contents="
 				+ contents + ", regDate=" + regDate + ", hit=" + hit + "]";
 	}
-	
-	
-	
-
 }
