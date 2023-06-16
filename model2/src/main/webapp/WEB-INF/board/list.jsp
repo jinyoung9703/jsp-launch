@@ -20,11 +20,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${boardList}" var="boardDto">
+			<c:forEach items="${boardList}" var="boardDto" varStatus="status">
 				<tr>
-					<td>${boardDto.id }</td>
-					<!-- 				query paramater get 방식 노출시키면안됨 -->
-					<td><a href="../board/view?id=${boardDto.id }">${boardDto.title }</a></td>
+					
+					<td>${pageDto.total -  pageDto.pagePerList*(clickPage-1) - status.index }</td>
+					<td><a href="../board/view?id=${boardDto.id}&clickPage=${clickPage}">${boardDto.title }</a></td>
 					<td>${boardDto.name }</td>
 					<td>${boardDto.regDate }</td>
 					<td>${boardDto.hit }</td>
@@ -34,28 +34,42 @@
 	</table>
 	<nav aria-label="Page navigation example">
 		<ul class="pagination justify-content-center">
-			<li class="page-item"><a class="page-link" href="#"
-				aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-			</a></li>
-			<c:forEach begin="1" end="${pageTotal }" step="1" var="page" varStatus="status">
-			
-				<li class="page-item ${page == param.clickpage?'active':'' }"><a class="page-link"
-					href="../board/list?start=${(page-1)*10+1 }&end=${page*10}&clickpage=${page}">${page }</a></li>
+		<!--넘어가는걸 막는다 -->
+				<li class="page-item">
+				<a class="page-link" href="../board/list?clickPage=${pageDto.pageStart-pageDto.pageBlock+(pageDto.pageBlock-1) }" aria-label="Previous"> 
+					<span aria-hidden="true">처음으로</span>
+				</a>
+			</li>
+		<c:if test="${pageDto.pageStart ne 	1 }">
+			<li class="page-item">
+				<a class="page-link" href="../board/list?clickPage=${pageDto.pageStart-pageDto.pageBlock+(pageDto.pageBlock-1) }" aria-label="Previous"> 
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+			</c:if>
+			<c:forEach begin="${pageDto.pageStart }" end = "${pageDto.pageEnd}" step="1" var="page" varStatus="status" >
+				<li class="page-item ${page == clickPage?'active':''}">
+					<a class="page-link" 
+					href="../board/list?clickPage=${page}">${page}</a>
+				</li>
 			</c:forEach>
-
-			<li class="page-item"><a class="page-link" href="#"
-				aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-			</a></li>
+			<!--넘어가는걸 막는다 -->
+			<c:if test="${pageDto.pageEnd ne pageDto.pageTotal}"> 
+			<li class="page-item">
+				<a class="page-link" 
+				href="../board/list?clickPage=${pageDto.pageStart+pageDto.pageBlock }" 
+					aria-label="Next"> 
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+			</c:if>
 		</ul>
 	</nav>
 
 	<div class="mt-5">
-		<a href="" class="btn btn-primary">WRITE</a>
-		<!-- 	<a href="" class="btn btn-danger">DELETE</a> -->
+		<a href="../board/write" class="btn btn-primary">WRITE</a>
+		<!-- <a href="" class="btn btn-danger">DELETE</a> -->
 	</div>
 </div>
 <%@ include file="../include/footer.jsp"%>
-
-
-
 

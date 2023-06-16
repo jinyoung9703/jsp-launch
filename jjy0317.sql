@@ -43,7 +43,7 @@ create table board (
     userId      varchar2(100)not null, -- member id를 통한 조회
     name        varchar2(100)not null,
     title       VARCHAR2(300) not null,
-    contents    VARCHAR2(3000) not null,
+    contents    clob not null,
     regdate     date default sysdate,
     hit         number,
     constraint  fk_userid foreign key(userId) references member (id)
@@ -84,4 +84,7 @@ select * from
 --(select * from board order by id desc) b;
 select count(*) from board;
 
+select rownum,board.* from board; 
+--테이블 순서 정할때 rownum을씀.
 
+--alter table board modify contents CLOB; --clob은 캐릭터 타입,blob

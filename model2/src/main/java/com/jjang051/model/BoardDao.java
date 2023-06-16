@@ -54,6 +54,7 @@ public class BoardDao {
 			close();
 		}
 		return result;
+			
 	}
 
 	public ArrayList<BoardDto> getList(int start,int end) {

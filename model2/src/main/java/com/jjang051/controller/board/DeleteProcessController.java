@@ -11,7 +11,7 @@ import com.jjang051.model.BoardDao;
 import com.jjy0317.utils.ScriptWriter;
 
 
-@WebServlet("/board/delete")
+
 public class DeleteProcessController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    
