@@ -14,8 +14,8 @@
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../summernote/summernote-lite.js"></script>
 <script
-   src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-   
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 </head>
 <body>
 	<div class="container">
@@ -24,22 +24,45 @@
 			<a href="/"
 				class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
 				jjang051 </a>
-			<ul class="nav nav-pills">
-				
-				
-				
+			<ul class="nav nav-pills gnb">
+
+
+
 				<c:choose>
 					<c:when test="${loggedMember eq null }">
-						<li class="nav-item"><a href="../member/login" class="nav-link">login</a></li>
-						<li class="nav-item"><a href="../member/join" class="nav-link">join</a></li>
-						<li class="nav-item"><a href="../board/list" class="nav-link">게시판</a></li>
+						<li class="nav-item"><a href="../member/login"
+							class="nav-link">login</a></li>
+						<li class="nav-item"><a href="../member/join"
+							class="nav-link">join</a></li>
+						<!-- 						<li class="nav-item"><a href="../board/list" class="nav-link">게시판</a></li> -->
 					</c:when>
 					<c:otherwise>
-						<li class="nav-item"><a href="../member/logout" class="nav-link">logout</a></li>
-						<li class="nav-item"><a href="../member/info?userId=${loggedMember.id }" class="nav-link">${loggedMember.name }</a></li>
-						<li class="nav-item"><a href="../board/list" class="nav-link">게시판</a></li>						
-						<li class="nav-item"><a href="../board/write" class="nav-link">글쓰기</a></li>
-					</c:otherwise>	
+						<li class="nav-item"><a href="../member/logout"
+							class="nav-link">logout</a></li>
+						<li class="nav-item"><a
+							href="../member/info?userId=${loggedMember.id }" class="nav-link">
+								<c:choose>
+									<c:when test="${loggedMember.realProfile eq null }">
+										<div class="profilBox">
+											<img
+												src="${pageContext.request.contextPath }/upload/user.png${loggedMember.realProfile} "
+												class="profile"> ${loggedMember.name }
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="profilBox">
+											<img
+												src="${pageContext.request.contextPath }/upload/${loggedMember.realProfile} "
+												class="profile"> ${loggedMember.name }
+										</div>
+									</c:otherwise>
+								</c:choose>
+
+						</a></li>
+						<li class="nav-item"><a href="../board/list" class="nav-link">게시판</a></li>
+						<!-- 						<li class="nav-item"><a href="../board/write" -->
+						<!-- 							class="nav-link">글쓰기</a></li> -->
+					</c:otherwise>
 				</c:choose>
 				<%-- <c:if test="${empty loggedMember}">
 					<li class="nav-item"><a href="login-form.jsp" class="nav-link">login</a></li>
@@ -52,5 +75,3 @@
 			</ul>
 		</header>
 	</div>
-	
-	

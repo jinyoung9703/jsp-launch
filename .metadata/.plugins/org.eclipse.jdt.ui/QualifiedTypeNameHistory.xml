@@ -28,4 +28,5 @@
     <fullyQualifiedTypeName name="javax.servlet.RequestDispatcher"/>
     <fullyQualifiedTypeName name="com.jjang051.model.BoardDao"/>
     <fullyQualifiedTypeName name="com.jjang051.model.BoardDto"/>
+    <fullyQualifiedTypeName name="com.jjang051.model.PageDto"/>
 </qualifiedTypeNameHistroy>

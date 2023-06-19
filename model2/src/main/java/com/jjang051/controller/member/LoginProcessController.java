@@ -36,9 +36,9 @@ public class LoginProcessController extends HttpServlet {
 		MemberDto loggedMember = memberDao.loginMember(memberDto);
 		HttpSession session = request.getSession();//
 		if(loggedMember!=null) {
-			session.setAttribute("loggedMemberId",loggedMember.getId());
-			session.setAttribute("loggedMemberName",loggedMember.getName());// 테스트 하려고 써본거....
-			
+			//session.setAttribute("loggedMemberId",loggedMember.getId());
+			//session.setAttribute("loggedMemberName",loggedMember.getName());// 테스트 하려고 써본거....
+			//session.setAttribute("loggedMemberProfile",loggedMember.getRealProfile());
 			session.setAttribute("loggedMember",loggedMember);
 			ScriptWriter.alertAndNext(response, loggedMember.getName()+"님 안녕하세요.","../index/index");
 		}else{

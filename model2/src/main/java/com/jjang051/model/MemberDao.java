@@ -38,7 +38,7 @@ public class MemberDao {
 	public int insertMember(MemberDto memberDto) {
 		int result = 0;
 		getConnection();
-		String sql =  "insert into member values(?,?,?,?,?,?,?,?)";
+		String sql =  "insert into member values(?,?,?,?,?,?,?,?,?,?)";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberDto.getId());
@@ -49,6 +49,8 @@ public class MemberDao {
 			pstmt.setString(6, memberDto.getAddress());
 			pstmt.setString(7, memberDto.getDetailAddress());
 			pstmt.setString(8, memberDto.getExtraAddress());
+			pstmt.setString(9,memberDto.getProfile());
+			pstmt.setString(10, memberDto.getRealProfile());
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,8 +77,12 @@ public class MemberDao {
 				loggedMemberDto = new MemberDto();
 				String userId =  rs.getString("id");
 				String userName = rs.getString("name");
+				String realProfile = rs.getString("realProfile");
+				
 				loggedMemberDto.setId(userId);
 				loggedMemberDto.setName(userName);
+				loggedMemberDto.setRealProfile(realProfile);
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,7 +111,7 @@ public class MemberDao {
 		}
 		return result;
 	}
-
+	//
 	public MemberDto getMemberInfo(String userId) {
 		MemberDto infoMemberDto = null;;
 		getConnection();
@@ -131,12 +137,13 @@ public class MemberDao {
 		}
 		return infoMemberDto;
 	}
-	
+
 	public int modifyMember(MemberDto memberDto) {
-		int result = 0;
+		int result= 0;
 		
 		getConnection();
-		String sql = "update member set name = ?, email = ?,zonecode = ?, address = ?, detailAddress = ?, extraAddress = ?, where id = ? and password = ?";
+		String sql = "update member set name = ?,email = ?,zonecode = ?,address = ?,detailAddress = ?,extraAddress = ?"
+				+" where id = ? and password = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -151,53 +158,16 @@ public class MemberDao {
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			close();
 		}
 		
 		return result;
-		
 	}
-	public int modifyPasswordMember(MemberDto memberDto) {
-		int result = 0;
-		getConnection();
-		String sql = "select * from member where id = ?";
-
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, memberDto.getPassword());
-			result = pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			close();
-		}
-		
-		return result;
-		}
-	public int deleteMember(DeleteDto deleteMember) {
-		int result = 0;
-		getConnection();
-		String sql = "delete from member where id = ? and password = ?";
-
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, deleteMember.getUserId());
-			pstmt.setString(2, deleteMember.getUserPw());
-			result = pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			close();
-		}
-		
-		return result;
-		}
-
 	public int modifyPassword(PasswordDto passwordDto) {
 		int result = 0;
 		getConnection();
-		String sql = "update member set password = ? where id = ? and password = ?";
+		String sql =  "update member set password = ? where id = ? and password = ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, passwordDto.getNewUserPw());
@@ -210,23 +180,31 @@ public class MemberDao {
 		return result;
 	}
 
-	
-//	to delteMember
 	public int deleteMember(MemberDto memberDto) {
 		int result = 0;
 		
 		getConnection();
-		String sql = "delete from member where id = ? and password = ?";
+		String sql =  "delete from member where id = ? and password = ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1,memberDto.getId());
 			pstmt.setString(2, memberDto.getPassword());
 			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return result;
 	}
 }
-	
+
+
+
+
+
+
+
+
+
+
+
+
