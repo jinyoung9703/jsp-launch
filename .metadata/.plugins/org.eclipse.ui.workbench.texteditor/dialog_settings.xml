@@ -4,10 +4,12 @@
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
-		<item key="incremental" value="true"/>
+		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="loggedMemberName"/>
+		<item key="selection" value="replyboard"/>
 		<list key="findhistory">
+			<item value="replyboard"/>
+			<item value="board"/>
 			<item value="loggedMemberName"/>
 			<item value="allAddress"/>
 			<item value="&quot;"/>
@@ -17,6 +19,7 @@
 		</list>
 		<list key="replacehistory">
 			<item value=""/>
+			<item value="replyboard"/>
 			<item value=" "/>
 		</list>
 	</section>

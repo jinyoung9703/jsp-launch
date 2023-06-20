@@ -13,6 +13,13 @@ create table member(
     detailaddress    varchar2(100),
     extraaddress     varchar2(100)
 );
+alter table member add profile varchar2(100);
+alter table member add realprofile varchar2(100);
+
+select*from member;
+
+--파일을 저장하는게 아니라 텍스트로 변환해서 저장함,
+
 -- Create  Read Update  Delete 다넣을땐 생략 가능
 insert into member(id,name,password) values ('jinyoung97','정진영','1234');
 insert into member values ('hong','박진영','1234','address','zipcode','male');
@@ -88,3 +95,43 @@ select rownum,board.* from board;
 --테이블 순서 정할때 rownum을씀.
 
 --alter table board modify contents CLOB; --clob은 캐릭터 타입,blob
+
+
+
+create table replyboard (
+    id          number primary key, --글의 고유 번호  
+    userId      varchar2(100)not null, -- member id를 통한 조회
+    name        varchar2(100)not null,
+    title       VARCHAR2(300) not null,
+    contents    clob not null,
+    regdate     date default sysdate,
+    hit         number,
+    regroup     number not null,
+    relevel     number not null,
+    restep      number not null,
+    available   number(1) default 0,
+    
+    constraint  fk02_userid foreign key(userId) references member (id)
+);
+
+drop table replyboard;
+
+select nvl (max (regroup),1 )as regroupmax from replyboard;
+-- max 제일 큰숫자를 찾아주는 함수
+-- nvl 함수는 만약에 글이하나도 없어 null이 나올때 1로 대체해라.
+
+select * from replyboard;
+
+-- 원글에 대한 댓글을 쓸때 내가 가진 regroup안의 relevel은 1증가 시킨다...
+
+
+update replyboard set relevel=relevel+1 where regroup = 3 and relevel > 0;
+
+rollback;
+
+select rownum as no, b.* from(
+    select * from replyboard order by regroup desc, relevel asc
+)b;
+ --desc 뒤집기
+ delete from replyboard;
+ commit;
