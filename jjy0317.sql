@@ -135,3 +135,14 @@ select rownum as no, b.* from(
  --desc 뒤집기
  delete from replyboard;
  commit;
+ 
+ select *from replyboard where title  like '%비%'; -- like 비슷한거 찾아주세여
+ 
+ select * from replyboard where (name like '%정%') or (title like '%비%') or (contents like '%번%');
+ 
+ 
+ select *from
+            ( select rownum as no, b.* from(
+                select * from replyboard where name like '%번%' order by regroup desc, relevel ASC
+            ) b)
+where no >=1 and no <=5;

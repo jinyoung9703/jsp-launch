@@ -41,7 +41,7 @@ public class ModifyProcessController extends HttpServlet {
 		if(!currentDir.exists()) {
 			currentDir.mkdir();
 		}
-		System.out.println("currentDir===="+currentDir);
+		System.out.println("currentDir=1=1=1="+currentDir);
 		DefaultFileRenamePolicy fileRenamePolicy = new DefaultFileRenamePolicy();	
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath,fileSize,encoding,fileRenamePolicy);
 		String userId = multipartRequest.getParameter("userId"); 

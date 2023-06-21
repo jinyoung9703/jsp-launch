@@ -20,7 +20,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${boardList}" var="boardDto" varStatus="status">
+			<c:forEach items="${searchList}" var="boardDto" varStatus="status">
 				<tr>
 
 					<td>${pageDto.total -  pageDto.pagePerList*(clickPage-1) - status.index }</td>
@@ -75,18 +75,16 @@
 		</ul>
 	</nav>
 	<div class="searchBox">
-		<form action="../board/searchProcess" method="get">
-			<!-- 	method는 안써도됨 디폴트로 겟설정되있음 -->
-			<select name="category">
-				<option value="title">제목</option>
-				<option value="name">글쓴이</option>
-				<option value="contents">내용</option>
-				<option value="all">전체</option>
-			</select> <input type="text" name="searchword" placeholder="검색어를 입력해주세요.">
-			<button>검색</button>
+	<form action="../board/searchProcess" method="get">														<!-- 	method는 안써도됨 디폴트로 겟설정되있음 -->
+		<select name="category">
+			<option value="title">제목</option>
+			<option value="name">글쓴이</option>
+			<option value="contents">내용</option>
+		</select>	
+		<input type="text" name="searchword" placeholder="검색어를 입력해주세요.">
+		<button>검색</button>
 		</form>
 	</div>
-
 
 	<div class="mt-5">
 		<a href="../board/write" class="btn btn-primary">WRITE</a>

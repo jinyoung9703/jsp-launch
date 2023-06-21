@@ -6,36 +6,46 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import com.jjang051.mybatis.MybatisConnectionFactory;
 
 public class BoardDao {
-	private String driver = "oracle.jdbc.OracleDriver"; 
-	private String url = "jdbc:oracle:thin:@localhost:1521:xe"; 
-	private String id = "jjy0317"; 
-	private String pw = "1234"; 
-	
-	private Connection conn = null; 
+	private String driver = "oracle.jdbc.OracleDriver";
+	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	private String id = "jjy0317";
+	private String pw = "1234";
+
+	private Connection conn = null;
 	private PreparedStatement pstmt = null;
-	private ResultSet rs = null; 
-	// MVC  design pattern  
+	private ResultSet rs = null;
+
+	// MVC design pattern
 	private void getConnection() {
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, id, pw);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
-	
+
 	private void close() {
 		try {
-			if(rs!=null) rs.close();
-			if(pstmt!=null) pstmt.close();
-			if(conn!=null) conn.close();
+			if (rs != null)
+				rs.close();
+			if (pstmt != null)
+				pstmt.close();
+			if (conn != null)
+				conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public int updateRelevel(BoardDto boardDto) {
 		int result = 0;
 		getConnection();
@@ -50,15 +60,15 @@ public class BoardDao {
 		}
 		return result;
 	}
-	
+
 	public int getMaxRegroup() {
 		int result = 0;
 		getConnection();
 		String sql = "select nvl (max (regroup),0 )as regroupmax from replyboard";
 		try {
-			pstmt = conn.prepareStatement(sql); //1
+			pstmt = conn.prepareStatement(sql); // 1
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				result = rs.getInt("regroupmax");
 			}
 		} catch (Exception e) {
@@ -67,126 +77,67 @@ public class BoardDao {
 		}
 		return result;
 	}
-	
 
 	public int writeBoard(BoardDto boardDto) {
 		int result = 0;
 		int max = getMaxRegroup();
-		//max++;
-		getConnection();
-		String sql = "insert into replyboard values(seq_replyboard.nextval,?,?,?,?,sysdate,0,?,?,?,1)";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, boardDto.getUserId());
-			pstmt.setString(2, boardDto.getName());
-			pstmt.setString(3, boardDto.getTitle());
-			pstmt.setString(4, boardDto.getContents());
-			pstmt.setInt(5, max+1);
-			pstmt.setInt(6, 1);
-			pstmt.setInt(7, 1);
-			result = pstmt.executeUpdate();
-			System.out.println(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
+		boardDto.setRegroup(max+1);
+		boardDto.setRelevel(1);
+		boardDto.setRestep(1);
+		SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+		sqlSession.insert("writeBoard", boardDto);
+		if(result>0) {
+			sqlSession.commit();
+		}else {
+			sqlSession.rollback();
 		}
+		sqlSession.close();
 		return result;
-			
+
 	}
 
-	public ArrayList<BoardDto> getList() {
-		ArrayList<BoardDto> boardList = null;
-		getConnection();
-//		String sql = "select * from"
-//				+ "(select rownum as no,b.* from"
-//				+ "		(select * from replyboard order by id desc) b) where no  >=? and no <=?";
-		String sql ="select rownum as no, b.* from("
-				+ "    select * from replyboard order by regroup desc, relevel asc"
-				+ ") b";
-		try {
-			pstmt = conn.prepareStatement(sql);
-//			pstmt.setInt(1, start);
-//			pstmt.setInt(2, end);
-			
-			rs = pstmt.executeQuery();
-			boardList = new ArrayList<>();
-			while(rs.next()) {
-				BoardDto boardDto = new BoardDto();
-				boardDto.setId(rs.getInt("id"));
-				boardDto.setUserId(rs.getString("userId"));
-				boardDto.setName(rs.getString("name"));
-				boardDto.setTitle(rs.getString("title"));
-				boardDto.setContents(rs.getString("contents"));
-				boardDto.setRegDate(rs.getString("regDate"));
-				boardDto.setHit(rs.getInt("hit"));
-				boardDto.setRegroup(rs.getInt("regroup"));
-				boardDto.setRelevel(rs.getInt("relevel"));
-				boardDto.setRestep(rs.getInt("restep"));
-				boardDto.setAvailable(rs.getInt("available"));
-				
-				boardList.add(boardDto);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public List<BoardDto> getList(HashMap <String,Integer> pageMap) {
+
+		List<BoardDto> boardList = null;
+		SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+		boardList = sqlSession.selectList("getList", pageMap);
+		sqlSession.close();
+
 		return boardList;
 	}
-	public void updateHit(int id) {
-		getConnection();
-		String sql = "update replyboard set hit = hit + 1 where id = ?";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, id);
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
+
+	public int updateHit(int id) {
+		int result = 0;
+		SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+		result = sqlSession.update("updateHit", id);
+		if (result > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
 		}
+		sqlSession.close();
+		return result;
 	}
+
 	public BoardDto getView(int id) {
 		BoardDto boardDto = null;
-		updateHit(id);
-		getConnection();
-		String sql = "select * from replyboard where id = ?";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1,id);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				boardDto = new BoardDto();
-				boardDto.setId(rs.getInt("id"));
-				boardDto.setUserId(rs.getString("userId"));
-				boardDto.setName(rs.getString("name"));
-				boardDto.setTitle(rs.getString("title"));
-				boardDto.setContents(rs.getString("contents"));
-				boardDto.setRegDate(rs.getString("regDate"));
-				boardDto.setHit(rs.getInt("hit"));
-				boardDto.setRegroup(rs.getInt("regroup"));
-				boardDto.setRelevel(rs.getInt("relevel"));
-				boardDto.setRestep(rs.getInt("restep"));
-				boardDto.setAvailable(rs.getInt("available"));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		updateHit(id);
+		SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+		boardDto = sqlSession.selectOne("getView", id);
+		sqlSession.close();
 		return boardDto;
 	}
 
 	public int deleteBoard(int id) {
 		int result = 0;
-		getConnection();
-		String sql = "update replyboard set available = 0 where id = ?";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1,id);
-			result = pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
+		SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+		result = sqlSession.update("deleteBoard", id);
+		if (result > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
 		}
+		sqlSession.close();
 		return result;
 	}
 
@@ -217,15 +168,15 @@ public class BoardDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				total = rs.getInt("total");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			close();
 		}
-		
+
 		return total;
 	}
 
@@ -250,9 +201,18 @@ public class BoardDao {
 			close();
 		}
 		return result;
-			
+
 	}
+
+	public List<BoardDto> search(String category, String searchWord) {
+		List<BoardDto> searchList = null;
+		SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+		HashMap<String, String> searchMap = new HashMap<>();
+		searchMap.put("category",category);
+		searchMap.put("searchWord",searchWord);
+		
+		searchList = sqlSession.selectList("search",searchMap);
+		return searchList;
+	}
+
 }
-
-
-
